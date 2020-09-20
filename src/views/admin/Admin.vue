@@ -27,7 +27,7 @@
                         <span class="user-name">ibra
                             <strong>karim</strong>
                         </span>
-                        <span class="user-role"> {{email}} </span>
+                        <span class="user-role">ibra@asd.asd</span>
                         <span class="user-status">
                             <i class="fa fa-circle"></i>
                             <span>Online</span>

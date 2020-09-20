@@ -38,15 +38,22 @@
 
                 <div class="form-group">
                   <input type="text"
-                    placeholder="Product price"
+                    placeholder="Price"
                     v-model="product.price"
+                    class="form-control">
+                </div>
+
+                 <div class="form-group">
+                  <input type="number"
+                    placeholder="Quantity"
+                    v-model="product.quantity"
                     class="form-control">
                 </div>
 
                 <div class="form-group">
                   <input type="text"
                     placeholder="Product tags"
-                    v-model="tag"
+                    v-model="product.tags"
                     class="form-control">
                 </div>
 
@@ -77,6 +84,7 @@ export default {
         name: '',
         description: '',
         price: '',
+        quantity: '',
         tags: '',
       },
     };

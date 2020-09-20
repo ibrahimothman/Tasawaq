@@ -25,16 +25,20 @@
               </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr v-for="product in products" :key="product.id">
                   <td>
-                    name
+                    {{ product.name }}
                   </td>
 
                   <td>
-                    500
+                    {{ product.price }}
                   </td>
                   <td>
-                    10
+                    {{ product.quantity }}
+                  </td>
+
+                  <td>
+                    {{ product.description }}
                   </td>
 
                   <td>
@@ -52,11 +56,21 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import AddProductModal from '@/components/product/AddProductModal.vue';
 
 export default {
   components: {
     AddProductModal,
+  },
+  computed: {
+    ...mapState('products', ['products']),
+  },
+  methods: {
+    ...mapActions('products', ['initProducts']),
+  },
+  async created() {
+    await this.initProducts();
   },
 };
 </script>

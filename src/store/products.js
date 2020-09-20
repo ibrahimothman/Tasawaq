@@ -1,4 +1,5 @@
 import { firestoreAction } from 'vuexfire';
+import firebase from '../firebase';
 import db from '../db';
 
 const state = {
@@ -6,22 +7,26 @@ const state = {
 };
 
 const actions = {
-  initProducts: firestoreAction(({ bindFirestoreRef }) => {
+  initProducts: firestoreAction(async ({ bindFirestoreRef }) => {
     // return the promise returned by `bindFirestoreRef`
-    bindFirestoreRef('products', db.collection('products'));
+    await bindFirestoreRef('products', db.collection('products'));
   }),
 
-  async addProduct({ rootState }, product) {
+  async addProduct({ rootState }, payload) {
     const { id } = db.collection('products').doc();
-    product.id = id;
-    product.created_at = firebase.firestore.FieldValue.serverTimestamp();
-    product.user_id = rootState.auth.user.id;
+    const product = {
+      ...payload,
+      id,
+      created_at: firebase.firestore.FieldValue.serverTimestamp(),
+      user_id: rootState.auth.user.id,
+    };
     try {
-      await db.collection('products').doc(product.id).set(product);
+      const res = await db.collection('products').doc(product.id).set(product);
+      console.log(res);
     } catch (err) {
       console.error(err);
     }
-  }
+  },
 };
 
 export default {
