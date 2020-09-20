@@ -5,7 +5,12 @@
         <h3>Products</h3>
       </div>
       <div class="col-md-6">
-        <button class="btn btn-primary float-right">Add Proasdduct</button>
+        <a
+          class="btn btn-primary float-right"
+          data-toggle="modal"
+          data-target="#addProductModal">
+          Add Product
+        </a>
       </div>
     </div>
     <div class="row">
@@ -42,6 +47,16 @@
           </table>
       </div>
     </div>
-
+    <add-product-modal></add-product-modal>
   </div>
 </template>
+
+<script>
+import AddProductModal from '@/components/product/AddProductModal.vue';
+
+export default {
+  components: {
+    AddProductModal,
+  },
+};
+</script>
