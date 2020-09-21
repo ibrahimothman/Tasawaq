@@ -1,6 +1,7 @@
 import { firestoreAction } from 'vuexfire';
 import firebase from '../firebase';
 import db from '../db';
+import uploadImage from '../storage';
 
 const state = {
   products: [],
@@ -21,15 +22,25 @@ const actions = {
   async addProduct({ rootState }, payload) {
     const { id } = db.collection('products').doc();
     const product = {
-      ...payload,
+      name: payload.name,
+      description: payload.description,
+      price: payload.price,
+      quantity: payload.quantity,
+      tags: payload.tags,
       id,
       created_at: firebase.firestore.FieldValue.serverTimestamp(),
       updated_at: firebase.firestore.FieldValue.serverTimestamp(),
       user_id: rootState.auth.user.id,
     };
     try {
-      const res = await db.collection('products').doc(product.id).set(product);
-      console.log(res);
+      // create a product
+      await db.collection('products').doc(product.id).set(product);
+      // upload the image
+      const downloadURL = await uploadImage(payload.image, 'products', product.id);
+      // update product's image
+      await db.collection('products').doc(product.id).update({
+        imageURL: downloadURL,
+      });
     } catch (err) {
       console.error(err);
     }

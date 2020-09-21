@@ -70,13 +70,6 @@
               aria-labelledby="pills-register-tab">
 
               <div class="form-group">
-                  <label for="name">Your name</label>
-                  <input type="text" v-model="name"
-                    class="form-control" id="name"
-                    placeholder="Your nice name">
-              </div>
-
-              <div class="form-group">
                   <label for="email">Email address</label>
                   <input type="email"  v-model="email"
                     class="form-control" id="email"

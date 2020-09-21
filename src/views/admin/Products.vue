@@ -9,7 +9,7 @@
           class="btn btn-primary float-right"
           data-toggle="modal"
           data-target="#productModal"
-          @click="title = 'Add Product'; type = 'add'; product = {}"
+          @click="title = 'Add Product'; type = 'add'; product = { tags: [] }"
           >
           Add Product
         </a>
@@ -79,7 +79,7 @@ export default {
     return {
       title: '',
       type: '',
-      product: {},
+      product: { tags: [] },
     };
   },
   computed: {

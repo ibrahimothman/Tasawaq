@@ -50,17 +50,35 @@
                 <div class="form-group">
                   <input type="text"
                     placeholder="Product tags"
-                    v-model="product.tags"
+                    v-model="tag"
+                    @keyup.enter="addTag"
                     class="form-control">
                 </div>
 
+                <div class="d-flex flex-wrap">
+                  <div
+                    v-for="(tag, index) in product.tags"
+                    :key="index"
+                    class="form-group tag mr-1">
+                    <span>{{ tag }} </span>
+                    <i class="fas fa-times" @click="removeTag(index)"></i>
+                  </div>
+                </div>
+
                 <div class="form-group">
-                  <button class="btn btn-primary">Upload image</button>
+                  <button @click="onUploadClicked" class="btn btn-primary">Upload image</button>
                   <input
                     type="file"
                     class="form-control"
                     style="display: none"
+                    @change="onImageUploaded"
                     ref="fileInput">
+                </div>
+                <div v-if="type === 'add' && imageURL" class="form-group">
+                  <img :src="imageURL" alt="" class="img-fluid">
+                </div>
+                <div v-else-if="type === 'edit'" class="form-group">
+                  <img :src="product.imageURL" alt="" class="img-fluid">
                 </div>
               </div>
             </div>
@@ -96,7 +114,11 @@ export default {
   },
   data() {
     return {
-      product: {},
+      product: {
+        tags: [],
+      },
+      tag: '',
+      imageURL: null,
     };
   },
   watch: {
@@ -109,6 +131,7 @@ export default {
     async onAddProduct() {
       await this.addProduct(this.product);
       this.product = {};
+      this.imageURL = null;
       $('#productModal').modal('hide');
     },
     async onUpdateProduct() {
@@ -117,6 +140,33 @@ export default {
       this.product = {};
       $('#productModal').modal('hide');
     },
+    addTag() {
+      this.product.tags.push(this.tag);
+      this.tag = '';
+    },
+    removeTag(index) {
+      this.product.tags.splice(index, 1);
+    },
+    onUploadClicked() {
+      this.$refs.fileInput.click();
+    },
+    onImageUploaded(e) {
+      const file = e.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', () => {
+        this.imageURL = fileReader.result;
+      });
+      fileReader.readAsDataURL(file);
+      this.product.image = file;
+    },
   },
 };
 </script>
+
+<style scoped>
+  .tag {
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    padding: 5px;
+  }
+</style>

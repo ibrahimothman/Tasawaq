@@ -5,6 +5,7 @@ import Admin from '../views/admin/Admin.vue';
 import Overview from '../views/admin/Overview.vue';
 import Products from '../views/admin/Products.vue';
 import Orders from '../views/admin/Orders.vue';
+import Profile from '../views/admin/Profile.vue';
 import store from '../store';
 
 Vue.use(VueRouter);
@@ -43,6 +44,11 @@ const routes = [
         path: 'orders',
         name: 'Admin-Orders',
         component: Orders,
+      },
+      {
+        path: 'profile',
+        name: 'Admin-Profile',
+        component: Profile,
       },
     ],
   },

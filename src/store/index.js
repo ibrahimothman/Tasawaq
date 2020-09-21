@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
 import auth from './auth';
 import products from './products';
+import profile from './profile';
 
 Vue.use(Vuex);
 
@@ -11,5 +12,6 @@ export default new Vuex.Store({
   modules: {
     auth,
     products,
+    profile,
   },
 });

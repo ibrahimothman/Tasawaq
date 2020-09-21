@@ -8,23 +8,18 @@ import 'jquery';
 import 'popper.js';
 import './assets/app.scss';
 import firebase from './firebase';
+import auth from './auth';
 
 Vue.config.productionTip = false;
 
 let app;
 
 firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    store.commit('auth/setUser', { id: user.uid });
-  } else {
-    store.commit('auth/setUser', null);
-    router.push('/');
-  }
-  if (!app) {
-    app = new Vue({
-      router,
-      store,
-      render: (h) => h(App),
-    }).$mount('#app');
+ if (!app) {
+  app = new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }).$mount('#app');
   }
 });

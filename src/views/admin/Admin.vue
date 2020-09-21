@@ -24,13 +24,13 @@
                           src="/img/user.png" alt="User picture">
                     </div>
                     <div class="user-info">
-                        <span class="user-name">ibra
-                            <strong>karim</strong>
+                        <span class="user-name">{{ firstname }}
+                            <strong>{{ lastname }}</strong>
                         </span>
-                        <span class="user-role">ibra@asd.asd</span>
+                        <span class="user-role">{{ profile.email }}</span>
                         <span class="user-status">
                             <i class="fa fa-circle"></i>
-                            <span>Online</span>
+
                         </span>
                     </div>
                 </div>
@@ -103,13 +103,25 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
     return {
       sidebar: true,
     };
+  },
+  computed: {
+    ...mapState('profile', ['profiles']),
+    profile() {
+      return this.profiles[0] || {};
+    },
+    firstname() {
+      return this.profiles[0] ? this.profiles[0].name.split(' ')[0] : '';
+    },
+    lastname() {
+      return this.profiles[0] ? this.profiles[0].name.split(' ')[1] : '';
+    },
   },
   methods: {
     ...mapActions('auth', ['signOut']),

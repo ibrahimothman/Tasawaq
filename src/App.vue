@@ -13,9 +13,7 @@ export default {
     ...mapState('auth', ['user']),
   },
   created() {
-    if (this.user) {
-      this.$router.push('/admin').catch(() => {});
-    }
+
   },
 };
 </script>
