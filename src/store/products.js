@@ -7,9 +7,15 @@ const state = {
 };
 
 const actions = {
-  initProducts: firestoreAction(async ({ bindFirestoreRef }) => {
+  initProducts: firestoreAction(async ({ rootState, bindFirestoreRef }) => {
     // return the promise returned by `bindFirestoreRef`
-    await bindFirestoreRef('products', db.collection('products'));
+    const { user } = rootState.auth;
+    await bindFirestoreRef(
+      'products',
+      db
+        .collection('products')
+        .where('user_id', '==', user.id),
+    );
   }),
 
   async addProduct({ rootState }, payload) {
@@ -18,6 +24,7 @@ const actions = {
       ...payload,
       id,
       created_at: firebase.firestore.FieldValue.serverTimestamp(),
+      updated_at: firebase.firestore.FieldValue.serverTimestamp(),
       user_id: rootState.auth.user.id,
     };
     try {
@@ -25,6 +32,25 @@ const actions = {
       console.log(res);
     } catch (err) {
       console.error(err);
+    }
+  },
+
+  async deleteProduct(_, productId) {
+    try {
+      await db.collection('products').doc(productId).delete();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  async updateProduct(_, product) {
+    try {
+      await db.collection('products').doc(product.id).set({
+        ...product,
+        updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (error) {
+      console.error(error);
     }
   },
 };

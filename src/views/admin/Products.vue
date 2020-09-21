@@ -8,7 +8,9 @@
         <a
           class="btn btn-primary float-right"
           data-toggle="modal"
-          data-target="#addProductModal">
+          data-target="#productModal"
+          @click="title = 'Add Product'; type = 'add'; product = {}"
+          >
           Add Product
         </a>
       </div>
@@ -42,8 +44,17 @@
                   </td>
 
                   <td>
-                    <button class="btn btn-primary mr-2">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <button
+                      @click="onEditBtnClicked(product)"
+                      data-toggle="modal"
+                      data-target="#productModal"
+                      class="btn btn-primary mr-2">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger"
+                      @click="onDeleteProduct(product.id)">
+                      Delete
+                    </button>
                   </td>
 
                 </tr>
@@ -51,23 +62,50 @@
           </table>
       </div>
     </div>
-    <add-product-modal></add-product-modal>
+    <product-modal
+      :title="title"
+      :type="type"
+      :oldProduct="product">
+    </product-modal>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import AddProductModal from '@/components/product/AddProductModal.vue';
+import ProductModal from '@/components/product/ProductModal.vue';
+import { swal, Toast } from '@/swal';
 
 export default {
   components: {
-    AddProductModal,
+    ProductModal,
+  },
+  data() {
+    return {
+      title: '',
+      type: '',
+      product: {},
+    };
   },
   computed: {
     ...mapState('products', ['products']),
   },
   methods: {
-    ...mapActions('products', ['initProducts']),
+    ...mapActions('products', ['initProducts', 'deleteProduct']),
+    async onDeleteProduct(productId) {
+      const result = await swal();
+      if (result.value) {
+        await this.deleteProduct(productId);
+        Toast.fire({
+          icon: 'success',
+          title: 'Successfully Deleted',
+        });
+      }
+    },
+    onEditBtnClicked(product) {
+      this.title = 'Edit Product';
+      this.type = 'edit';
+      this.product = product;
+    },
   },
   async created() {
     await this.initProducts();
