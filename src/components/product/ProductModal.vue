@@ -27,27 +27,24 @@
 
                 <div class="form-group">
                   <label for="">Add Description</label>
-                  <textarea v-model="product.description"
-                    class="form-control" id="" rows="3"></textarea>
+                  <vue-editor v-model="product.description"></vue-editor>
                 </div>
+
               </div>
               <!-- product sidebar -->
               <div class="col-md-4">
-                <h4 class="display-6">Product Details</h4>
-                <hr>
-
                 <div class="form-group">
-                  <input type="text"
-                    placeholder="Price"
-                    v-model="product.price"
-                    class="form-control">
-                </div>
+                  <div class="input-group">
+                    <input type="number"
+                      placeholder="Price"
+                      v-model="product.price"
+                      class="form-control">
+                      <input type="number"
+                      placeholder="Quantity"
+                      v-model="product.quantity"
+                      class="form-control">
+                  </div>
 
-                 <div class="form-group">
-                  <input type="number"
-                    placeholder="Quantity"
-                    v-model="product.quantity"
-                    class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -58,8 +55,12 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="product_image">Product Images</label>
-                  <input type="file" class="form-control">
+                  <button class="btn btn-primary">Upload image</button>
+                  <input
+                    type="file"
+                    class="form-control"
+                    style="display: none"
+                    ref="fileInput">
                 </div>
               </div>
             </div>
@@ -86,9 +87,13 @@
 /* eslint-disable object-shorthand */
 import { mapActions } from 'vuex';
 import $ from 'jquery';
+import { VueEditor } from 'vue2-editor';
 
 export default {
   props: ['title', 'oldProduct', 'type'],
+  components: {
+    VueEditor,
+  },
   data() {
     return {
       product: {},

@@ -40,10 +40,6 @@
                   </td>
 
                   <td>
-                    {{ product.description }}
-                  </td>
-
-                  <td>
                     <button
                       @click="onEditBtnClicked(product)"
                       data-toggle="modal"
